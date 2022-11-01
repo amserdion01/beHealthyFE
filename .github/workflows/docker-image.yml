@@ -9,18 +9,25 @@ on:
 jobs:
 
   build:
-
+    
     runs-on: ubuntu-latest
-
+    env: 
+      DATABASE_URL : file:./db.sqlite
+      NEXTAUTH_SECRET : xx
+      NEXTAUTH_URL : http://localhost:3000
+      DISCORD_CLIENT_ID : xx
+      DISCORD_CLIENT_SECRET : xx
     steps:
     - uses: actions/checkout@v3
 
     - name: Install
       run: npm install
 
-    - name: Run
+    - name: Build
       run: npm run build
-      
+    
+    - name: Start
+      run: npm run start
         
   dockerimage:
     if: contains('refs/heads/main', github.ref)
