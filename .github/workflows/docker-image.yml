@@ -25,9 +25,6 @@ jobs:
 
     - name: Build
       run: npm run build
-    
-    - name: Start
-      run: npm run start
         
   dockerimage:
     if: contains('refs/heads/main', github.ref)
