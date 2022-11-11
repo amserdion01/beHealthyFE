@@ -5,6 +5,7 @@ module.exports = {
     extend: {
       backgroundImage:{
         'main-page': "url('/HomeBG.png')",
+        'login-page': "url('/LoginBG.png')",
       },
       backgroundSize:{
         'auto': 'auto',
