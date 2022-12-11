@@ -13,6 +13,14 @@ const config = {
     locales: ["en"],
     defaultLocale: "en",
   },
-  output: "standalone"
+  output: "standalone",
+    images: {
+      remotePatterns: [
+        {
+          protocol: 'https',
+          hostname: 'storage.googleapis.com',
+        },
+      ],
+    },
 };
 export default config;

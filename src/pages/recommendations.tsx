@@ -2,49 +2,52 @@ import { type NextPage } from "next";
 import { FaUser } from "react-icons/fa";
 import { BiRefresh } from "react-icons/bi";
 import Link from "next/link";
-
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios"
+import { RecipeType } from "../types/recipe";
 interface RecipeProps {
-    id: string;
-    title: string;
-    img: string;
-    desc: string;
+    ID: string;
+    Name: string;
+    Details: string;
+    ImageURL: string;
 }
-const randomRecipes: RecipeProps[] = [
-    {
-        id: "1",
-        title: "Ice cream",
-        img: "Icecream.png",
-        desc: "Tasty icecream"
-    },
-    {
-        id: "2",
-        title: "Ice cream",
-        img: "Icecream.png",
-        desc: "Tasty icecream"
-    },
-    {
-        id: "3",
-        title: "Ice cream",
-        img: "Icecream.png",
-        desc: "Tasty icecream"
-    },
-
-]
 const Recipe: React.FC<RecipeProps> = (recipe: RecipeProps) => {
     return (
         <div className="grow-0 max-w-xs">
             <div className="border-2 rounded-md border-black w-72 h-72">
-                <img src={recipe.img} alt="Pic" className="object-fill rounded-md aspect-square" />
+                <img src={recipe.ImageURL} alt="Pic" className="object-fill rounded-md aspect-square" />
             </div>
-            <h2 className="font-bold break-words text-lg">{recipe.title}</h2>
-            <p className="break-words text-sm">{recipe.desc}</p>
-            <Link href={`/recipe/${recipe.id}`}>
+            <h2 className="font-bold break-words text-lg">{recipe.Name}</h2>
+            <p className="break-words text-sm">{recipe.Details}</p>
+            <Link href={`/recipe/${recipe.ID}`}>
                 <button className="bg-black hover:bg-green-900 text-white font-bold my-5 py-4 px-7 rounded-full text-xl">View</button>
             </Link>
         </div>
     )
 }
+const API_URL = "http://0.0.0.0:8080/v1/recipe"
+type GetRecipeResponse = {
+    recipes: RecipeType[];
+  };
 const RecommendationsPage: NextPage = () => {
+    const { isLoading, error, data, isFetching } = useQuery({
+        queryKey: ["randomRecipes"],
+        queryFn: () =>
+          axios
+            .get<GetRecipeResponse>(`${API_URL}/random/3`)
+            .then((res) => {
+                console.log(res);
+                return res.data
+            }),
+      });
+      if (isLoading || isFetching) {
+        return <div>Loading </div>
+      }
+      if (error instanceof Error) {
+        return( <div>
+            {error.message}
+            </div>)
+      }
     return (
         <div className="font-sans">
             <div className="flex items-center justify-between p-10">
@@ -58,7 +61,7 @@ const RecommendationsPage: NextPage = () => {
                 </div>
             </div>
             <div className="font-sans flex flex-row items-center justify-evenly p-16">
-                {randomRecipes.map((recipe, i) => <Recipe {...recipe} />)}
+                {data?.map((recipe, i) => <Recipe key={i} {...recipe} />)}
             </div>
         </div>
     )
