@@ -5,7 +5,7 @@ import {BiUser} from "react-icons/bi";
 
 const HomePage: NextPage = () => {
     return (
-        <div className="h-screen bg-cover bg-main-page">
+        <div className="h-screen bg-cover bg-main-page font-sans">
             <nav className="p-8 bg-black opacity-50 flex items-center justify-between">
                 <Link href="/cookBook">
                     <BsBook className="w-12 h-12 " color="white" />
