@@ -7,7 +7,7 @@ const HomePage: NextPage = () => {
     return (
         <div className="h-screen bg-cover bg-main-page font-sans">
             <nav className="p-8 bg-black opacity-50 flex items-center justify-between">
-                <Link href="/cookBook">
+                <Link href="/cookbooks">
                     <BsBook className="w-12 h-12 " color="white" />
                 </Link>
                 <Link href="/login">
