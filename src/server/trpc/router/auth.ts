@@ -16,6 +16,28 @@ export const authRouter = router({
   getSecretMessage: protectedProcedure.query(() => {
     return "You are logged in and can see this secret message!";
   }),
+  getFavoriteRecipes: protectedProcedure.query(async ({ ctx }) => {
+    const user = await prisma.user.findUnique({
+      where: {
+        id: ctx.session.user.id,
+      },
+      select: {
+        favorites: true,
+      },
+    });
+    return user?.favorites;
+  }),
+  getSavedRecipes: protectedProcedure.query(async ({ ctx }) => {
+    const user = await prisma.user.findUnique({
+      where: {
+        id: ctx.session.user.id,
+      },
+      select: {
+        saved: true,
+      },
+    });
+    return user?.saved;
+  }),
   deleteRecipe: protectedProcedure
     .input(
       z.object({
@@ -64,6 +86,123 @@ export const authRouter = router({
 
       return recipes;
     }),
+  isFavOrBookmarked: protectedProcedure
+    .input(
+      z.object({
+        recipeID: z.string(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      const user = await prisma.user.findUnique({
+        where: {
+          id: ctx.session.user.id,
+        },
+        select: {
+          favorites: true,
+          saved: true,
+        },
+      });
+      if (user) {
+        const bookmarked = user?.saved.includes(input.recipeID);
+        const favorited = user?.favorites.includes(input.recipeID);
+        return {
+          bookmarked,
+          favorited,
+        };
+      }
+      return {
+        bookmarked: false,
+        favorited: false,
+      };
+    }),
+  updateFavorite: protectedProcedure
+    .input(
+      z.object({
+        id: z.string(),
+        favorite: z.boolean(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const user = await prisma.user.findUnique({
+        where: {
+          id: ctx.session.user.id,
+        },
+        select: {
+          favorites: true,
+        },
+      });
+      if (!user) {
+        return { msg: `No user with id: ${ctx.session.user.id} found` };
+      }
+      if (!input.favorite) {
+        const updated = await prisma.user.update({
+          where: {
+            id: ctx.session.user.id,
+          },
+          data: {
+            favorites: {
+              push: input.id,
+            },
+          },
+        });
+        return updated;
+      }
+
+      const filteredFavs = user.favorites.filter((id) => id != input.id);
+      const updated = await prisma.user.update({
+        where: {
+          id: ctx.session.user.id,
+        },
+        data: {
+          favorites: filteredFavs,
+        },
+      });
+      return updated;
+    }),
+  updatBookmarked: protectedProcedure
+    .input(
+      z.object({
+        id: z.string(),
+        bookmark: z.boolean(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const user = await prisma.user.findUnique({
+        where: {
+          id: ctx.session.user.id,
+        },
+        select: {
+          saved: true,
+        },
+      });
+      if (!user) {
+        return { msg: `No user with id: ${ctx.session.user.id} found` };
+      }
+      if (!input.bookmark) {
+        const updated = await prisma.user.update({
+          where: {
+            id: ctx.session.user.id,
+          },
+          data: {
+            saved: {
+              push: input.id,
+            },
+          },
+        });
+        return updated;
+      }
+
+      const filteredBookmarks = user.saved.filter((id) => id != input.id);
+      const updated = await prisma.user.update({
+        where: {
+          id: ctx.session.user.id,
+        },
+        data: {
+          saved: filteredBookmarks,
+        },
+      });
+      return updated;
+    }),
   getCookbooks: protectedProcedure.query(async () => {
     const cookbooks = await prisma.cookbook.findMany({
       select: {
@@ -108,9 +247,14 @@ export const authRouter = router({
       })
     )
     .mutation(async ({ ctx, input }) => {
+      const base64EncodedImage = input.Image.blob.replace(
+        /^data:\w+\/\w+;base64,/,
+        ""
+      );
+      const imageBuffer = Buffer.from(base64EncodedImage, "base64");
       await bucket
         .file(`${input.CookbookID}_${input.Image.name}`)
-        .save(Buffer.from(input.Image.blob, "base64").toString());
+        .save(imageBuffer);
       const ImageURL = await bucket
         .file(`${input.CookbookID}_${input.Image.name}`)
         .publicUrl();

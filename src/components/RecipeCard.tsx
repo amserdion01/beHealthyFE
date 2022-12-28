@@ -6,7 +6,7 @@ const RecipeCard: React.FC<RecipeType> = (recipe) => {
   const ctx = trpc.useContext();
   const deleteRecipe = trpc.auth.deleteRecipe.useMutation({
     onSuccess: async () => {
-      await ctx.auth.getCookbookRecipes.invalidate();
+      await ctx.auth.invalidate();
     },
   });
   return (

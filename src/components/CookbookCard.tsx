@@ -17,7 +17,15 @@ type RecipeFormValues = {
   Tools: string;
   Images: FileList;
 };
+const readFile = (file: File) =>
+  new Promise<string>((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result as string);
+    reader.readAsDataURL(file);
+    reader.onerror = (error) => reject(error);
+  });
 export type { RecipeFormValues };
+
 const CookbookCard: React.FC<CookbookCardProps> = ({ name, id }) => {
   const recipes = trpc.auth.getCookbookRecipes.useQuery({ CookbookID: id });
   const [addForm, setAddForm] = useState<boolean>(false);
@@ -30,23 +38,17 @@ const CookbookCard: React.FC<CookbookCardProps> = ({ name, id }) => {
   const onSubmit: SubmitHandler<RecipeFormValues> = async (data) => {
     const image = data.Images.item(0);
     if (image) {
-      const fileReader = new FileReader();
-      fileReader.onloadend = ({ target }) => {
-        if (target && target.result) {
-          const blob = Buffer.from(target.result.toString(), "base64").toString();
-          addRecipe.mutate({
-            CookbookID: id,
-            Image: {
-              blob,
-              name: image.name,
-            },
-            ...data,
-          });
-        }
-      };
-      fileReader.readAsBinaryString(image);
+      const blob = await readFile(image);
+      addRecipe.mutate({
+        CookbookID: id,
+        Image: {
+          blob,
+          name: image.name,
+        },
+        ...data,
+      });
+      setAddForm(false);
     }
-    setAddForm(false);
   };
 
   if (!recipes.data) {
