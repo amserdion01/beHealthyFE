@@ -6,6 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { type RecipeType } from "../types/recipe";
 import Image from "next/image";
+import { useEffect } from "react";
 interface RecipeProps {
   ID: string;
   Name: string;
@@ -35,19 +36,28 @@ const Recipe: React.FC<RecipeProps> = (recipe: RecipeProps) => {
 };
 const API_URL = "http://0.0.0.0:8080/v1/recipe";
 const RecommendationsPage: NextPage = () => {
-  const { isLoading, error, data, isFetching, refetch } = useQuery({
+  const query = useQuery({
     queryKey: ["randomRecipes"],
     queryFn: () =>
-      axios.get<RecipeType[]>(`${API_URL}/random/3`).then((res) => {
-        console.log(res);
-        return res.data;
-      }),
+      axios
+        .get<RecipeType[]>(`${API_URL}/random/3`)
+        .then((res) => {
+          console.log(res);
+          return res.data;
+        })
+        .catch((err) => {
+          console.log(err);
+        })
+        .finally(() => {
+          console.log("Wtf");
+        }),
   });
-  if (isLoading || isFetching) {
+
+  if (query.isLoading || query.isFetching || !query.data) {
     return <div>Loading </div>;
   }
-  if (error instanceof Error) {
-    return <div>{error.message}</div>;
+  if (query.error instanceof Error) {
+    return <div>{query.error.message}</div>;
   }
   return (
     <div className="font-sans">
@@ -57,7 +67,7 @@ const RecommendationsPage: NextPage = () => {
           <button
             type="button"
             className="dark:focus:ring-[#4285F4]/55 mr-2 mb-2 inline-flex items-center rounded-full bg-black px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-green-900 hover:text-white focus:outline-none focus:ring-4 focus:ring-[#67A07C]/50"
-            onClick={() => refetch()}
+            onClick={() => query.refetch()}
           >
             <BiRefresh className="mr-2 -ml-1 h-8 w-8 font-sans" color="white" />
             Others
@@ -66,7 +76,7 @@ const RecommendationsPage: NextPage = () => {
         </div>
       </div>
       <div className="flex flex-row items-center justify-evenly p-16 font-sans">
-        {data?.map((recipe, i) => (
+        {query.data.map((recipe, i) => (
           <Recipe key={i} {...recipe} />
         ))}
       </div>

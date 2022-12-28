@@ -3,10 +3,8 @@ import type { ParsedUrlQuery } from "querystring";
 import type { NextPage } from "next";
 import {
   type ReactEventHandler,
-  useEffect,
   useRef,
   useState,
-  useLayoutEffect,
 } from "react";
 import { AiOutlineStar, AiOutlineClockCircle } from "react-icons/ai";
 import { BsBookmark } from "react-icons/bs";
@@ -46,7 +44,7 @@ const Recipe: NextPage<{ recipe: RecipeType }> = ({ recipe }) => {
 
   return (
     <div className="flex h-screen w-screen">
-      <div className="flex w-3/5 flex-col items-center justify-evenly ">
+      <div className="flex w-3/5 flex-col items-center justify-evenly relative">
         <div>
           <div className="">{recipe.Name}</div>
           <div>Author: {recipe.Author}</div>

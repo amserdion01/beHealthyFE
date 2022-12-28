@@ -110,7 +110,7 @@ export const authRouter = router({
     .mutation(async ({ ctx, input }) => {
       await bucket
         .file(`${input.CookbookID}_${input.Image.name}`)
-        .save(Buffer.from(input.Image.blob, "base64"));
+        .save(Buffer.from(input.Image.blob, "base64").toString());
       const ImageURL = await bucket
         .file(`${input.CookbookID}_${input.Image.name}`)
         .publicUrl();

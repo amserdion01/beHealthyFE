@@ -1,5 +1,5 @@
 import type { NextPage } from "next";
-import React from "react";
+import React, { useEffect } from "react";
 import { trpc } from "../utils/trpc";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import CookbookCard from "../components/CookbookCard";
@@ -13,7 +13,10 @@ const Cookbooks: NextPage = () => {
   const addMutation = trpc.auth.addCookbook.useMutation({
     onSuccess: () => cookbooks.refetch(),
   });
-
+  
+  useEffect(() => {
+    console.log("🚀 ~ file: cookbooks.tsx:18 ~ useEffect ~ cookbooks", cookbooks)
+  }, [cookbooks])
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     addMutation.mutate({ name: data.name });
   };
