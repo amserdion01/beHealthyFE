@@ -161,7 +161,7 @@ const Recipe: NextPage<{ recipe: RecipeType }> = ({ recipe }) => {
 export const getServerSideProps: GetServerSideProps<{
   recipe: RecipeType;
 }> = async (context) => {
-  const API_URL = "http://0.0.0.0:8080/v1/recipe";
+  const API_URL = "http://0.0.0.0:8888/v1/recipe";
   const { id } = context.params as IParams;
   const res = await fetch(`${API_URL}/${id}`);
 

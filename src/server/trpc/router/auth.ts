@@ -5,7 +5,7 @@ import axios from "axios";
 import { type RecipeType } from "../../../types/recipe";
 import { Storage } from "@google-cloud/storage";
 const storage = new Storage({
-  keyFilename: "/Users/personal/webtech/beHealthy/beHealthyFE/gcp_keyfile.json",
+  keyFilename: "C:\\Users\\gurit\\Downloads\\behealthy.json",
 });
 const bucket = storage.bucket("behealthy");
 
@@ -46,7 +46,7 @@ export const authRouter = router({
     )
     .mutation(async ({ input }) => {
       const res = await axios.delete<RecipeType>(
-        `http://0.0.0.0:8080/v1/recipe/${input.recipeID}`
+        `http://0.0.0.0:8888/v1/recipe/${input.recipeID}`
       );
       if (res.status == 200) {
         await prisma.recipe.delete({ where: { id: input.recipeID } });
@@ -77,7 +77,7 @@ export const authRouter = router({
 
       for (const { id } of recipeIDs) {
         const { data } = await axios.get<RecipeType>(
-          `http://0.0.0.0:8080/v1/recipe/${id}`
+          `http://0.0.0.0:8888/v1/recipe/${id}`
         );
 
         recipes.push(data);
@@ -259,7 +259,7 @@ export const authRouter = router({
         .file(`${input.CookbookID}_${input.Image.name}`)
         .publicUrl();
       const res = await axios.post<RecipeType>(
-        "http://0.0.0.0:8080/v1/recipe",
+        "http://0.0.0.0:8888/v1/recipe",
         {
           Author: ctx.session.user.name,
           AuthorID: ctx.session.user.id,

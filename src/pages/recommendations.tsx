@@ -34,7 +34,7 @@ const Recipe: React.FC<RecipeProps> = (recipe: RecipeProps) => {
     </div>
   );
 };
-const API_URL = "http://0.0.0.0:8080/v1/recipe";
+const API_URL = "http://0.0.0.0:8888/v1/recipe";
 const RecommendationsPage: NextPage = () => {
   const query = useQuery({
     queryKey: ["randomRecipes"],
