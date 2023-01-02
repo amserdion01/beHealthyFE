@@ -6,13 +6,14 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { type RecipeType } from "../types/recipe";
 import Image from "next/image";
-import { useEffect } from "react";
 interface RecipeProps {
   ID: string;
   Name: string;
   Details: string;
   ImageURL: string;
 }
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
+
 const Recipe: React.FC<RecipeProps> = (recipe: RecipeProps) => {
   return (
     <div className="max-w-xs grow-0">
@@ -34,7 +35,6 @@ const Recipe: React.FC<RecipeProps> = (recipe: RecipeProps) => {
     </div>
   );
 };
-const API_URL = "http://0.0.0.0:8888/v1/recipe";
 const RecommendationsPage: NextPage = () => {
   const query = useQuery({
     queryKey: ["randomRecipes"],

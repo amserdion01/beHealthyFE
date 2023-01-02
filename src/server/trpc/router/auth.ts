@@ -46,7 +46,7 @@ export const authRouter = router({
     )
     .mutation(async ({ input }) => {
       const res = await axios.delete<RecipeType>(
-        `http://0.0.0.0:8888/v1/recipe/${input.recipeID}`
+        `${ API_URL }${input.recipeID}`
       );
       if (res.status == 200) {
         await prisma.recipe.delete({ where: { id: input.recipeID } });
@@ -77,7 +77,7 @@ export const authRouter = router({
 
       for (const { id } of recipeIDs) {
         const { data } = await axios.get<RecipeType>(
-          `http://0.0.0.0:8888/v1/recipe/${id}`
+          `${ API_URL }${id}`
         );
 
         recipes.push(data);
@@ -259,7 +259,7 @@ export const authRouter = router({
         .file(`${input.CookbookID}_${input.Image.name}`)
         .publicUrl();
       const res = await axios.post<RecipeType>(
-        "http://0.0.0.0:8888/v1/recipe",
+        `${ API_URL }`,
         {
           Author: ctx.session.user.name,
           AuthorID: ctx.session.user.id,
