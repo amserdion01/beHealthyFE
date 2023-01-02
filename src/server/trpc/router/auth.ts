@@ -8,7 +8,7 @@ const storage = new Storage({
   keyFilename: "C:\\Users\\gurit\\Downloads\\behealthy.json",
 });
 const bucket = storage.bucket("behealthy");
-
+const API_URL = process.env.API_URL
 export const authRouter = router({
   getSession: publicProcedure.query(({ ctx }) => {
     return ctx.session;
