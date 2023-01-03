@@ -5,7 +5,7 @@ import axios from "axios";
 import { type RecipeType } from "../../../types/recipe";
 import { Storage } from "@google-cloud/storage";
 const storage = new Storage({
-  keyFilename: "/Users/personal/webtech/beHealthy/beHealthyFE/gcp_keyfile.json",
+  keyFilename: "/etc/secrets/gcp_keyfile.json",
 });
 const bucket = storage.bucket("behealthy");
 const API_URL = process.env.API_URL
