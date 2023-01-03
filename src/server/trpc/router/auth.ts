@@ -5,7 +5,7 @@ import axios from "axios";
 import { type RecipeType } from "../../../types/recipe";
 import { Storage } from "@google-cloud/storage";
 const storage = new Storage({
-  keyFilename: "C:\\Users\\gurit\\Downloads\\behealthy.json",
+  keyFilename: "/Users/personal/webtech/beHealthy/beHealthyFE/gcp_keyfile.json",
 });
 const bucket = storage.bucket("behealthy");
 const API_URL = process.env.API_URL
@@ -46,7 +46,7 @@ export const authRouter = router({
     )
     .mutation(async ({ input }) => {
       const res = await axios.delete<RecipeType>(
-        `${ API_URL }${input.recipeID}`
+        `${ API_URL }/${input.recipeID}`
       );
       if (res.status == 200) {
         await prisma.recipe.delete({ where: { id: input.recipeID } });
@@ -77,7 +77,7 @@ export const authRouter = router({
 
       for (const { id } of recipeIDs) {
         const { data } = await axios.get<RecipeType>(
-          `${ API_URL }${id}`
+          `${ API_URL }/${id}`
         );
 
         recipes.push(data);

@@ -10,7 +10,7 @@ const RecipeCard: React.FC<RecipeType> = (recipe) => {
     },
   });
   return (
-    <div className="grid grid-cols-3 bg-red-200">
+    <div className="grid grid-cols-3 p-3 bg-[#becfae] mt-3">
       <div>{recipe.Author}</div>
       <div>{recipe.Name}</div>
       <div>

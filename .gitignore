@@ -5,7 +5,7 @@
 /.pnp
 .pnp.js
 
-gcp_keyfile.json
+**/**gcp_keyfile.json
 # testing
 /coverage
 

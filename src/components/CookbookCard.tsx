@@ -55,15 +55,17 @@ const CookbookCard: React.FC<CookbookCardProps> = ({ name, id }) => {
     return <div>Loading...</div>;
   }
   return (
-    <div className="m-10 bg-slate-400">
+    <div className=" my-10 mx-40 rounded-lg border bg-[#858d6f] p-4 text-center text-3xl text-white shadow-md sm:p-4">
       {name}
-      <div>
+      <div className="mt-4 text-base text-black">
         {recipes.data.map((recipe) => {
           return <RecipeCard key={recipe.ID} {...recipe} />;
         })}
       </div>
-      <div>
-        <button onClick={() => setAddForm(true)}>Add recipe</button>
+      <div className=" text-base mt-4">
+        <button className="p-2 rounded-full bg-[#2e612b] opacity-80  font-bold text-xl hover:bg-black text-white" onClick={() => setAddForm(true)}>
+          Add recipe
+        </button>
         {addForm && <RecipeForm onSubmit={onSubmit} methods={methods} />}
       </div>
     </div>
