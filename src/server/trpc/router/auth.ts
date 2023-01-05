@@ -8,7 +8,7 @@ const storage = new Storage({
   keyFilename: "/etc/secrets/gcp_keyfile.json",
 });
 const bucket = storage.bucket("behealthy");
-const API_URL = process.env.API_URL
+const API_URL = "http://backend.behealthy.svc.cluster.local:8888/v1/recipe"
 export const authRouter = router({
   getSession: publicProcedure.query(({ ctx }) => {
     return ctx.session;

@@ -161,7 +161,7 @@ const Recipe: NextPage<{ recipe: RecipeType }> = ({ recipe }) => {
 export const getServerSideProps: GetServerSideProps<{
   recipe: RecipeType;
 }> = async (context) => {
-  const API_URL = process.env.API_URL;
+  const API_URL = "http://backend.behealthy.svc.cluster.local:8888/v1/recipe";
   const { id } = context.params as IParams;
   const res = await fetch(`${API_URL}/${id}`);
 
