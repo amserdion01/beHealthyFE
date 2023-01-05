@@ -12,7 +12,6 @@ interface RecipeProps {
   Details: string;
   ImageURL: string;
 }
-const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 const Recipe: React.FC<RecipeProps> = (recipe: RecipeProps) => {
   return (
@@ -23,7 +22,7 @@ const Recipe: React.FC<RecipeProps> = (recipe: RecipeProps) => {
           src={recipe.ImageURL}
           alt="Pic"
           className="aspect-square rounded-md object-fill"
-        />
+          />
       </div>
       <h2 className="break-words text-lg font-bold">{recipe.Name}</h2>
       <p className="break-words text-sm">{recipe.Details}</p>
@@ -36,6 +35,7 @@ const Recipe: React.FC<RecipeProps> = (recipe: RecipeProps) => {
   );
 };
 const RecommendationsPage: NextPage = () => {
+  const API_URL = process.env.NEXT_PUBLIC_API_URL;
   const query = useQuery({
     queryKey: ["randomRecipes"],
     queryFn: () =>
@@ -47,10 +47,7 @@ const RecommendationsPage: NextPage = () => {
         })
         .catch((err) => {
           console.log(err);
-        })
-        .finally(() => {
-          console.log("Wtf");
-        }),
+        }).finally(() => console.log("api ", API_URL))
   });
 
   if (query.isLoading || query.isFetching || !query.data) {
