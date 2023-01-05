@@ -40,7 +40,7 @@ RUN \
 
 FROM --platform=linux/amd64 node:16-alpine3.16 AS runner
 WORKDIR /app
-COPY --from=deps prisma ./
+COPY --from=deps /app/prisma ./
 ENV NODE_ENV production
 
 # ENV NEXT_TELEMETRY_DISABLED 1
