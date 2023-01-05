@@ -38,11 +38,10 @@ RUN \
 
 ##### RUNNER
 
-FROM --platform=linux/amd64 nginx:1.23.3-alpine AS runner
-RUN apk add nodejs-current --repository=http://dl-cdn.alpinelinux.org/alpine/edge/community
+FROM --platform=linux/amd64 node:16-alpine3.16 AS runner
 WORKDIR /app
 ENV NODE_ENV production
-ADD nginx.conf /etc/nginx/conf.d/default.conf
+
 # ENV NEXT_TELEMETRY_DISABLED 1
 
 RUN addgroup --system --gid 1001 nodejs
@@ -55,7 +54,9 @@ COPY --from=builder /app/package.json ./package.json
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 COPY --chown=nextjs:nodejs ./prisma/schema.prisma ./schema.prisma
-EXPOSE 443
+
+USER nextjs
+EXPOSE 3000
 ENV PORT 3000
 
 CMD ["node", "server.js"]
