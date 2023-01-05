@@ -20,10 +20,11 @@ RUN \
  fi
 
 ##### BUILDER
-CMD ["npx", "prisma", "migrate", "deploy"]
 FROM --platform=linux/amd64 node:16-alpine AS builder
 ARG DATABASE_URL
 ARG NEXT_PUBLIC_CLIENTVAR
+ENV DATABASE_URL ${DATABASE_URL}
+CMD "npx prisma migrate deploy"
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
