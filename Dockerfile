@@ -20,7 +20,7 @@ RUN \
  fi
 
 ##### BUILDER
-
+CMD ["npx", "prisma", "migrate", "deploy"]
 FROM --platform=linux/amd64 node:16-alpine AS builder
 ARG DATABASE_URL
 ARG NEXT_PUBLIC_CLIENTVAR
