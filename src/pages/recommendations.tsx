@@ -13,6 +13,7 @@ interface RecipeProps {
   ImageURL: string;
 }
 
+const API_URL = "http://backend.behealthy.svc.cluster.local:8888/v1/recipe"
 const Recipe: React.FC<RecipeProps> = (recipe: RecipeProps) => {
   return (
     <div className="max-w-xs grow-0">
@@ -35,7 +36,6 @@ const Recipe: React.FC<RecipeProps> = (recipe: RecipeProps) => {
   );
 };
 const RecommendationsPage: NextPage = () => {
-  const API_URL = process.env.NEXT_PUBLIC_API_URL;
   const query = useQuery({
     queryKey: ["randomRecipes"],
     queryFn: () =>
