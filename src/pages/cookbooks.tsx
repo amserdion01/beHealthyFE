@@ -30,11 +30,11 @@ const Cookbooks: NextPage = () => {
         <Link href="/">
           <IoMdArrowRoundBack className="h-12 w-12 " color="white" />
         </Link>
-        <Link href="/">
+        <Link href="/favourites">
           <MdFavorite className="h-12 w-12 " color="white" />
         </Link>
       </nav>
-      <div className="bg-gray-100">
+      <div>
         <h1 className="mx-auto mb-12 p-4 h-1 w-4/12 text-center text-6xl font-bold text-green-900">
           Add new cookbook
         </h1>

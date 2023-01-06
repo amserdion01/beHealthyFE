@@ -11,9 +11,9 @@ const RecipeCard: React.FC<RecipeType> = (recipe) => {
   });
   return (
     <div className="grid grid-cols-3 p-3 bg-[#becfae] mt-3">
-      <div>{recipe.Author}</div>
-      <div>{recipe.Name}</div>
-      <div>
+      <div className="text-xl">{recipe.Author}</div>
+      <div className="text-xl">{recipe.Name}</div>
+      <div className="text-2xl text-green-800">
         <button onClick={() => deleteRecipe.mutate({ recipeID: recipe.ID })}>
           Delete
         </button>
