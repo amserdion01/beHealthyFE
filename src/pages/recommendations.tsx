@@ -13,7 +13,7 @@ interface RecipeProps {
   ImageURL: string;
 }
 
-const API_URL = "https://backend.behealthy.svc.cluster.local:8888/v1/recipe"
+const API_URL = "https://backend.behealthy.svc.cluster.local/v1/recipe"
 const Recipe: React.FC<RecipeProps> = (recipe: RecipeProps) => {
   return (
     <div className="max-w-xs grow-0">
