@@ -266,7 +266,11 @@ export const authRouter = router({
           ImageURL,
           ...input,
         }
-      );
+      );  
+      console.log("🚀 ~ file: auth.ts:270 ~ .mutation ~ res", res)
+
+        
+      
       const realRecipe = res.data;
       const recipe = await prisma.recipe.create({
         data: {
