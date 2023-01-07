@@ -1,9 +1,8 @@
 import type { NextPage } from "next";
-import React, { useEffect } from "react";
 import Link from "next/link";
 import { IoMdArrowRoundBack } from "react-icons/io";
 import { MdFavorite } from "react-icons/md";
-import { BiUser } from "react-icons/bi";
+import { FaUser } from "react-icons/fa";
 import { trpc } from "../utils/trpc";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import CookbookCard from "../components/CookbookCard";
@@ -30,12 +29,17 @@ const Cookbooks: NextPage = () => {
         <Link href="/">
           <IoMdArrowRoundBack className="h-12 w-12 " color="white" />
         </Link>
-        <Link href="/favourites">
-          <MdFavorite className="h-12 w-12 " color="white" />
-        </Link>
+        <div className="flex flex-row space-x-8">
+          <Link href="/favourites">
+            <MdFavorite className="h-12 w-12 " color="white" />
+          </Link>
+          <Link href="/login">
+            <FaUser className="h-12 w-12 " color="white"/>
+          </Link>
+        </div>
       </nav>
       <div>
-        <h1 className="mx-auto mb-12 p-4 h-1 w-4/12 text-center text-6xl font-bold text-green-900">
+        <h1 className="mx-auto mb-12 h-1 w-4/12 p-4 text-center text-6xl font-bold text-green-900">
           Add new cookbook
         </h1>
         <form
@@ -44,7 +48,7 @@ const Cookbooks: NextPage = () => {
         >
           <input
             type="text"
-            className="focus:shadow-outline appearance-none rounded border py-2 px-8 mb-8 text-center leading-tight text-gray-700 shadow focus:outline-none text-3xl "
+            className="focus:shadow-outline mb-8 appearance-none rounded border py-2 px-8 text-center text-3xl leading-tight text-gray-700 shadow focus:outline-none "
             placeholder="Cookbook Name"
             {...register("name", {})}
           />

@@ -8,7 +8,7 @@ const storage = new Storage({
   keyFilename: "/etc/secrets/gcp_keyfile.json",
 });
 const bucket = storage.bucket("behealthy");
-const API_URL = "https://www.be-healthy-uvt.live/v1/recipe"
+const API_URL = "https://www.be-healthy-uvt.live/v1/recipe";
 export const authRouter = router({
   getSession: publicProcedure.query(({ ctx }) => {
     return ctx.session;
@@ -46,7 +46,7 @@ export const authRouter = router({
     )
     .mutation(async ({ input }) => {
       const res = await axios.delete<RecipeType>(
-        `${ API_URL }/${input.recipeID}`
+        `${API_URL}/${input.recipeID}`
       );
       if (res.status == 200) {
         await prisma.recipe.delete({ where: { id: input.recipeID } });
@@ -76,9 +76,7 @@ export const authRouter = router({
       const recipes: RecipeType[] = [];
 
       for (const { id } of recipeIDs) {
-        const { data } = await axios.get<RecipeType>(
-          `${ API_URL }/${id}`
-        );
+        const { data } = await axios.get<RecipeType>(`${API_URL}/${id}`);
 
         recipes.push(data);
       }
@@ -115,6 +113,28 @@ export const authRouter = router({
         favorited: false,
       };
     }),
+  getFavorites: protectedProcedure.query(async ({ ctx }) => {
+    const user = await prisma.user.findUnique({
+      where: {
+        id: ctx.session.user.id,
+      },
+      select: {
+        favorites: true,
+      },
+    });
+    const favorites: RecipeType[] = [];
+    if (user) {
+      for (const id of user.favorites) {
+        console.log(id);
+        
+        const { data } = await axios.get<RecipeType>(`${API_URL}/${id}`);
+        console.log(data)
+        favorites.push(data);
+      }
+    }
+    return favorites
+    
+  }),
   updateFavorite: protectedProcedure
     .input(
       z.object({
@@ -227,6 +247,7 @@ export const authRouter = router({
   //     "Cooking": 40,
   //     "Tools": "oala"
   // }
+
   addRecipe: protectedProcedure
     .input(
       z.object({
@@ -258,19 +279,14 @@ export const authRouter = router({
       const ImageURL = await bucket
         .file(`${input.CookbookID}_${input.Image.name}`)
         .publicUrl();
-      const res = await axios.post<RecipeType>(
-        `${ API_URL }`,
-        {
-          Author: ctx.session.user.name,
-          AuthorID: ctx.session.user.id,
-          ImageURL,
-          ...input,
-        }
-      );  
-      console.log("🚀 ~ file: auth.ts:270 ~ .mutation ~ res", res)
+      const res = await axios.post<RecipeType>(`${API_URL}`, {
+        Author: ctx.session.user.name,
+        AuthorID: ctx.session.user.id,
+        ImageURL,
+        ...input,
+      });
+      console.log("🚀 ~ file: auth.ts:270 ~ .mutation ~ res", res);
 
-        
-      
       const realRecipe = res.data;
       const recipe = await prisma.recipe.create({
         data: {

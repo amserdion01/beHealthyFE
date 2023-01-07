@@ -2,11 +2,15 @@ import type { GetServerSideProps } from "next";
 import type { ParsedUrlQuery } from "querystring";
 import type { NextPage } from "next";
 import { type ReactEventHandler, useRef, useState, useEffect } from "react";
-import {
-  AiOutlineStar,
-  AiOutlineClockCircle,
-  AiFillStar,
-} from "react-icons/ai";
+import { FaUser } from "react-icons/fa";
+import { BsBook } from "react-icons/bs";
+import { IoMdArrowRoundBack } from "react-icons/io";
+import { MdFavorite } from "react-icons/md";
+import { MdFavoriteBorder } from "react-icons/md";
+
+import Link from "next/link";
+
+import { AiOutlineClockCircle } from "react-icons/ai";
 import { BsBookmark, BsBookmarkFill } from "react-icons/bs";
 import { ImSpoonKnife } from "react-icons/im";
 import type { RecipeType } from "../../types/recipe";
@@ -62,14 +66,14 @@ const Recipe: NextPage<{ recipe: RecipeType }> = ({ recipe }) => {
     bookmarkUpdate.mutate({ id: recipe.ID, bookmark: bookmarked });
   };
   const bookmark = bookmarked ? (
-    <BsBookmarkFill fill={"black"} size={"64px"} />
+    <BsBookmarkFill size={"64px"} color="rgb(20,83,45)" />
   ) : (
-    <BsBookmark fill={"black"} size={"64px"} />
+    <BsBookmark size={"64px"} color="rgb(20,83,45)" />
   );
   const favorite = favorited ? (
-    <AiFillStar size={"64px"} />
+    <MdFavorite size={"64px"} color="rgb(20,83,45)" />
   ) : (
-    <AiOutlineStar size={"64px"} />
+    <MdFavoriteBorder size={"64px"} color="rgb(20 83 45)" />
   );
 
   const onImgLoad: ReactEventHandler<HTMLImageElement> = () => {
@@ -82,77 +86,100 @@ const Recipe: NextPage<{ recipe: RecipeType }> = ({ recipe }) => {
   // }, []);
 
   return (
-    <div className="flex h-screen w-screen">
-      <div className="relative flex w-3/5 flex-col items-center justify-evenly">
-        <button
-          className="absolute top-0 left-0 m-5"
-          onClick={() => handleFavorite()}
-        >
-          {favorite}
-        </button>
-        <button
-          className="absolute top-0 right-0 m-5"
-          onClick={() => handleBookmarked()}
-        >
-          {bookmark}
-        </button>
-        <div>
-          <div className="">{recipe.Name}</div>
-          <div>Author: {recipe.Author}</div>
+    <div>
+      <nav className="flex items-center justify-between bg-green-900 p-10 opacity-50">
+        <Link href="/">
+          <IoMdArrowRoundBack className="h-12 w-12 " color="white" />
+        </Link>
+        <div className="flex flex-row space-x-8">
+          <Link href="/favourites">
+            <MdFavorite className="h-12 w-12 " color="white" />
+          </Link>
+          <Link href="/cookbooks">
+            <BsBook className="h-12 w-12 " color="white" />
+          </Link>
+          <Link href="/login">
+            <FaUser className="h-12 w-12 " color="white" />
+          </Link>
         </div>
-        <div className="flex w-full justify-evenly">
-          <span className="text-center">
-            <ImSpoonKnife size={"32px"} className="m-auto" />
-            Portions: <br />
-            {recipe.Portions}
-          </span>
-          <span className="text-center">
-            <AiOutlineClockCircle size={"32px"} className="m-auto" />
-            Cooking: <br />
-            {recipe.Cooking} min
-          </span>
-          <span className="text-center">
-            <AiOutlineClockCircle size={"32px"} className="m-auto" />
-            Preparation:
-            <br />
-            {recipe.Preparation} min
-          </span>
-        </div>
-        <hr className="bg-color-black w-11/12 border-black" />
-        <div className="flex w-full justify-evenly">
+      </nav>
+      <div className="flex h-screen w-screen">
+        <div className="relative flex w-3/5 flex-col items-center justify-evenly">
+          <button
+            className="absolute top-0 left-0 m-5"
+            onClick={() => handleFavorite()}
+          >
+            {favorite}
+          </button>
+          <button
+            className="absolute top-0 right-0 m-5"
+            onClick={() => handleBookmarked()}
+          >
+            {bookmark}
+          </button>
           <div>
-            Ingredients
-            <ul className="list-decimal">
-              {recipe.Ingredients.split(",").map((ingredient, i) => {
-                return <li key={`ingredient_${i}`}> {ingredient}</li>;
-              })}
-            </ul>
+            <div className="text-center text-6xl font-bold text-green-900">
+              {recipe.Name}
+            </div>
+            <div className="text-center mt-2 text-xl text-[#7D8F69]">
+              Author: {recipe.Author}
+            </div>
           </div>
+          <div className="flex w-full justify-evenly">
+            <span className="text-center">
+              <ImSpoonKnife size={"48px"} className="m-auto" />
+              Portions: <br />
+              {recipe.Portions}
+            </span>
+            <span className="text-center">
+              <AiOutlineClockCircle size={"48px"} className="m-auto" />
+              Cooking: <br />
+              {recipe.Cooking} min
+            </span>
+            <span className="text-center">
+              <AiOutlineClockCircle size={"48px"} className="m-auto" />
+              Preparation:
+              <br />
+              {recipe.Preparation} min
+            </span>
+          </div>
+          <hr className="bg-color-black w-11/12 border-black" />
+          <div className="flex w-full justify-evenly">
+            <div>
+              <h2 className="font-bold text-2xl text-green-900">Ingredients</h2>
+              <ul className="list-decimal">
+                {recipe.Ingredients.split(",").map((ingredient, i) => {
+                  return <li key={`ingredient_${i}`}> {ingredient}</li>;
+                })}
+              </ul>
+            </div>
+            <div>
+              <h2 className="text-2xl font-bold text-green-900">Tools</h2>
+              <ul className="list-disc">
+                {recipe.Tools.split(",").map((tool, i) => {
+                  return <li key={`tool_${i}`}> {tool}</li>;
+                })}
+              </ul>
+            </div>
+          </div>
+          <hr className="bg-color-black w-11/12 border-black" />
           <div>
-            Tools
-            <ul className="list-disc">
-              {recipe.Tools.split(",").map((tool, i) => {
-                return <li key={`tool_${i}`}> {tool}</li>;
-              })}
-            </ul>
+            <h2 className="font-bold text-2xl text-green-900">
+            Description</h2>
+            <div>{recipe.Details}</div>
           </div>
         </div>
-        <hr className="bg-color-black w-11/12 border-black" />
-        <div>
-          Description
-          <div>{recipe.Details}</div>
+        <div ref={div} className="flex w-2/5 items-center justify-center">
+          <Image
+            src={recipe.ImageURL}
+            width={dimensions.width}
+            height={dimensions.height}
+            alt="pic"
+            priority
+            ref={img}
+            onLoad={onImgLoad}
+          />
         </div>
-      </div>
-      <div ref={div} className="flex w-2/5 items-center justify-center">
-        <Image
-          src={recipe.ImageURL}
-          width={dimensions.width}
-          height={dimensions.height}
-          alt="pic"
-          priority
-          ref={img}
-          onLoad={onImgLoad}
-        />
       </div>
     </div>
   );
