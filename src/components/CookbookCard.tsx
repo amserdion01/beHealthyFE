@@ -16,6 +16,7 @@ type RecipeFormValues = {
   Portions: number;
   Tools: string;
   Images: FileList;
+  VideoURL: string;
 };
 const readFile = (file: File) =>
   new Promise<string>((resolve, reject) => {

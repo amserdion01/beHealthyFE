@@ -45,7 +45,12 @@ const RecipeForm: React.FC<RecipeFormProps> = ({ onSubmit, methods }) => {
           placeholder="Details"
           {...register("Details", {})}
         />
-       
+       <input
+          type="text"
+          className="focus:shadow-outline mt-6 appearance-none rounded border py-2 px-4 text-center text-xl leading-tight text-gray-700 shadow focus:outline-none"
+          placeholder="Video link"
+          {...register("VideoURL", {})}
+        />
         <input
           type="number"
           className="focus:shadow-outline mt-6 appearance-none rounded border py-2 px-4 text-center text-xl leading-tight text-gray-700 shadow focus:outline-none"
@@ -58,19 +63,22 @@ const RecipeForm: React.FC<RecipeFormProps> = ({ onSubmit, methods }) => {
           placeholder="Preparation"
           {...register("Preparation", { valueAsNumber: true })}
         />
-        <input
-          type="number"
-          className="focus:shadow-outline mt-6 appearance-none rounded border py-2 px-4 text-center text-xl leading-tight text-gray-700 shadow focus:outline-none"
-          placeholder="Cooking"
-          {...register("Cooking", { valueAsNumber: true })}
-        /></div>
-        <div className="ml-64 mr-64 mt-6 grid gap-4 grid-cols-1 grid-rows-2">
+        </div>
+        <div className="mx-3 mt-6 grid gap-4 grid-cols-2 grid-rows-1">
         <input
           type="text"
-          className="focus:shadow-outline mb-6 mt-6 appearance-none rounded border py-2 px-4 text-center text-xl leading-tight text-gray-700 shadow focus:outline-none"
+          className="focus:shadow-outline w-full mb-6 mt-6 appearance-none rounded border py-2 px-4 text-center text-xl leading-tight text-gray-700 shadow focus:outline-none"
           placeholder="Tools"
           {...register("Tools", {})}
         />
+        <input
+          type="number"
+          className="focus:shadow-outline w-full mb-6 mt-6 appearance-none rounded border py-2 px-4 text-center text-xl leading-tight text-gray-700 shadow focus:outline-none"
+          placeholder="Cooking"
+          {...register("Cooking", { valueAsNumber: true })}
+        />
+        </div>
+        <div>
         <input
           className="mt-3 mb-5 rounded-full bg-[#3C6255] py-2 px-5 text-xl font-bold shadow text-white opacity-90 hover:bg-black"
           type="submit"

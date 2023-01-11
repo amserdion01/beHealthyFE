@@ -10,4 +10,5 @@ export type RecipeType = {
     Cooking: string,
     Tools: string,
     ImageURL: string,
+    VideoURL: string,
   }

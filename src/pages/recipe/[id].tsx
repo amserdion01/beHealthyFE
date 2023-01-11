@@ -121,7 +121,7 @@ const Recipe: NextPage<{ recipe: RecipeType }> = ({ recipe }) => {
             <div className="text-center text-6xl font-bold text-green-900">
               {recipe.Name}
             </div>
-            <div className="text-center mt-2 text-xl text-[#7D8F69]">
+            <div className="mt-2 text-center text-xl text-[#7D8F69]">
               Author: {recipe.Author}
             </div>
           </div>
@@ -146,7 +146,7 @@ const Recipe: NextPage<{ recipe: RecipeType }> = ({ recipe }) => {
           <hr className="bg-color-black w-11/12 border-black" />
           <div className="flex w-full justify-evenly">
             <div>
-              <h2 className="font-bold text-2xl text-green-900">Ingredients</h2>
+              <h2 className="text-2xl font-bold text-green-900">Ingredients</h2>
               <ul className="list-decimal">
                 {recipe.Ingredients.split(",").map((ingredient, i) => {
                   return <li key={`ingredient_${i}`}> {ingredient}</li>;
@@ -164,21 +164,27 @@ const Recipe: NextPage<{ recipe: RecipeType }> = ({ recipe }) => {
           </div>
           <hr className="bg-color-black w-11/12 border-black" />
           <div className="">
-            <h2 className="font-bold text-2xl text-green-900 text-center pb-4">
-            Description</h2>
+            <h2 className="pb-4 text-center text-2xl font-bold text-green-900">
+              Description
+            </h2>
             <div className="mx-8">{recipe.Details}</div>
           </div>
         </div>
-        <div ref={div} className="flex w-2/5 items-center justify-center">
+        <div ref={div} className="flex flex-col w-2/5 items-center justify-center">
           <Image
             src={recipe.ImageURL}
-            width={dimensions.width}
-            height={dimensions.height}
+            width={dimensions.width*3/4}
+            height={dimensions.height*2/3}
             alt="pic"
             priority
             ref={img}
             onLoad={onImgLoad}
           />
+          <iframe className="relative mt-5 aspect-video "
+            allowFullScreen  
+            width={dimensions.width*3/4}        
+            src={recipe.VideoURL}
+          ></iframe>
         </div>
       </div>
     </div>

@@ -261,6 +261,7 @@ export const authRouter = router({
         Cooking: z.number(),
         Tools: z.string(),
         CookbookID: z.string(),
+        VideoURL: z.string(),
         Image: z.object({
           blob: z.string(),
           name: z.string(),
@@ -272,6 +273,7 @@ export const authRouter = router({
         /^data:\w+\/\w+;base64,/,
         ""
       );
+      
       const imageBuffer = Buffer.from(base64EncodedImage, "base64");
       await bucket
         .file(`${input.CookbookID}_${input.Image.name}`)
