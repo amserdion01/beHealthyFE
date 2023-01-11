@@ -163,10 +163,10 @@ const Recipe: NextPage<{ recipe: RecipeType }> = ({ recipe }) => {
             </div>
           </div>
           <hr className="bg-color-black w-11/12 border-black" />
-          <div>
-            <h2 className="font-bold text-2xl text-green-900">
+          <div className="">
+            <h2 className="font-bold text-2xl text-green-900 text-center pb-4">
             Description</h2>
-            <div>{recipe.Details}</div>
+            <div className="mx-8">{recipe.Details}</div>
           </div>
         </div>
         <div ref={div} className="flex w-2/5 items-center justify-center">

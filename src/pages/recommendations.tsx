@@ -29,7 +29,7 @@ const Recipe: React.FC<RecipeProps> = (recipe: RecipeProps) => {
         />
       </div>
       <h2 className="break-words text-lg font-bold">{recipe.Name}</h2>
-      <p className="break-words text-sm">{recipe.Details}</p>
+      <p className="break-words truncate text-sm">{recipe.Details}</p>
       <Link href={`/recipe/${recipe.ID}`}>
         <button className="my-5 rounded-full bg-black py-4 px-7 text-xl font-bold text-white hover:bg-green-900">
           View
